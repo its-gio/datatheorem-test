@@ -7,10 +7,14 @@ export default class App extends Component {
     employeesFilter: [],
     persons: 500,
     page: 1,
+    scrolling: false,
   };
 
   componentDidMount() {
     this.getContent();
+    this.scrollListener = window.addEventListener("scroll", (e) =>
+      this.handleScroll(e)
+    );
   }
 
   getContent = () => {
@@ -19,7 +23,10 @@ export default class App extends Component {
     )
       .then((blob) => blob.json())
       .then((res) =>
-        this.setState({ employees: [...this.state.employees, ...res] })
+        this.setState({
+          employees: [...this.state.employees, ...res],
+          scrolling: false,
+        })
       );
   };
 
@@ -30,13 +37,22 @@ export default class App extends Component {
     );
   };
 
+  handleScroll = (e) => {
+    if (this.state.scrolling) return;
+    const lastLi = document.querySelector(
+      "ul > .employees-list--employee:last-child"
+    );
+    const lastLiOffset = lastLi.offsetTop + lastLi.clientHeight;
+    const pageOffset = window.pageYOffset + window.innerHeight;
+    if (pageOffset > lastLiOffset - 40) this.loadMore();
+  };
+
   render() {
     return (
       <div className="App">
         <h1>City of Chicago Employees</h1>
         {/* If input != '' use filter json */}
         <EmployeesList employees={this.state.employees} />
-        <a onClick={this.loadMore}>Load More</a>
       </div>
     );
   }

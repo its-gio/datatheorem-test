@@ -1,21 +1,16 @@
-import React, { Component } from 'react'
+import React from "react";
 
-export default class index extends Component {
-  state = {
-    employees: []
-  }
-
-  componentDidMount() {
-    fetch("https://dt-interviews.appspot.com/")
-    .then(blob => blob.json())
-    .then(res => this.setState({ employees: res}))
-  }
-
-  render() {
-    return (
-      <div className="employees-list">
-        <h2>testing</h2>
-      </div>
-    )
-  }
+function index(props) {
+  const employeesMapprops = props.employees.map((employee) => (
+    <li key={employee.id} id={employee.id} className="employees-list--employee">
+      Title: {employee.job_titles} | Name: {employee.name}
+    </li>
+  ));
+  return (
+    <div className="employees-list">
+      <ul>{employeesMapprops}</ul>
+    </div>
+  );
 }
+
+export default index;

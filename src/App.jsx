@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import EmployeesList from "./components/EmployeesList";
+import { BrowserRouter as Router } from "react-router-dom";
+import Routes from "./routes";
 
 export default class App extends Component {
   state = {
@@ -49,11 +50,13 @@ export default class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <h1>City of Chicago Employees</h1>
-        {/* If input != '' use filter json */}
-        <EmployeesList employees={this.state.employees} />
-      </div>
+      <Router>
+        <div className="App">
+          <h1>City of Chicago Employees</h1>
+          {/* If input != '' use filter json */}
+          {Routes}
+        </div>
+      </Router>
     );
   }
 }

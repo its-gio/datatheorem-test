@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import Spinner from "../../img/Loading.gif";
+import { Link } from "react-router-dom";
 
 function index(props) {
   const employeesMapprops = props.employees.map((employee) => (
@@ -10,12 +11,16 @@ function index(props) {
   ));
   return (
     <div className="employees-list">
-      <h2>Employees List</h2>
-      {props.loading ? (
-        <img src={Spinner} alt="Loading Content" />
-      ) : (
-        <ul>{employeesMapprops}</ul>
-      )}
+      <div className="employees-list--title">
+        <h2>Employees List</h2>
+        <div className="employees-list--title__link-containter">
+          <Link to="/employee-form">
+            <button>+</button>
+          </Link>
+        </div>
+      </div>
+      <ul>{employeesMapprops}</ul>
+      {props.loading && <img src={Spinner} alt="Loading Content" />}
     </div>
   );
 }

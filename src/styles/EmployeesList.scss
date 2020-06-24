@@ -2,6 +2,20 @@
   max-width: 1200px;
   margin: 20px auto;
 
+  &--title {
+    display: flex;
+    align-items: center;
+
+    h2,
+    div {
+      flex: 1;
+    }
+
+    button {
+      padding: 5px 10px;
+    }
+  }
+
   &--employee {
     padding: 10px;
 

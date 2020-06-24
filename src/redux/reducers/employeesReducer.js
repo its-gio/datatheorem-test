@@ -3,12 +3,13 @@ const initialState = {
   employeesFilter: [],
   persons: 500,
   page: 1,
+  focus: null,
   loading: true,
 };
 
 // Actions
 const GET_EMPLOYEES = "GET_EMPLOYEES";
-const ADD_PAGE = "ADD_PAGE";
+const CHANGE_FOCUS = "CHANGE_FOCUS";
 
 // Export Functions
 export function getEmpoyees() {
@@ -19,6 +20,13 @@ export function getEmpoyees() {
   return {
     type: GET_EMPLOYEES,
     payload: data,
+  };
+}
+
+export function changeFocus(id) {
+  return {
+    type: CHANGE_FOCUS,
+    payload: id,
   };
 }
 
@@ -44,6 +52,13 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
+      };
+
+    case CHANGE_FOCUS:
+      console.log(payload);
+      return {
+        ...state,
+        focus: payload,
       };
 
     default:

@@ -1,13 +1,17 @@
 import React from "react";
-import { connect } from "react-redux";
-import Spinner from "../../img/Loading.gif";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import EmlpoyeeesMap from "./EmlpoyeeesMap";
+import Spinner from "../../img/Loading.gif";
 
 function index(props) {
-  const employeesMapprops = props.employees.map((employee) => (
-    <li key={employee.id} id={employee.id} className="employees-list--employee">
-      Title: {employee.job_titles} | Name: {employee.name}
-    </li>
+  const employeesMapped = props.employees.map((employee) => (
+    <EmlpoyeeesMap
+      key={employee.id}
+      id={employee.id}
+      job_titles={employee.job_titles}
+      name={employee.name}
+    />
   ));
   return (
     <div className="employees-list">
@@ -19,7 +23,7 @@ function index(props) {
           </Link>
         </div>
       </div>
-      <ul>{employeesMapprops}</ul>
+      <ul>{employeesMapped}</ul>
       {props.loading && <img src={Spinner} alt="Loading Content" />}
     </div>
   );

@@ -1,13 +1,17 @@
 .employees-list {
-  border: 1px solid red;
   max-width: 1200px;
   margin: 20px auto;
 
   &--employee {
     padding: 10px;
 
+    &:hover {
+      background-color: lighten(#00416a, 40%);
+      cursor: pointer;
+    }
+
     &.hl {
-      background-color: blue;
+      background-color: #00416a;
       color: white;
     }
   }

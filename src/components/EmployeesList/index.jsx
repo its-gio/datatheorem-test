@@ -20,10 +20,10 @@ function index(props) {
   );
 }
 
-export default connect(
-  (reduxState) => ({
-    employees: reduxState.employees.employees,
-    loading: reduxState.employees.loading,
-  }),
-  null
-)(index);
+const mapStateToProps = (reduxState) => ({
+  employees: reduxState.employees.employees,
+  loading: reduxState.employees.loading,
+  page: reduxState.employees.page,
+});
+
+export default connect(mapStateToProps, null)(index);

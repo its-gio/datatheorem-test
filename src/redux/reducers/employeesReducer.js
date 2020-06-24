@@ -8,11 +8,12 @@ const initialState = {
 
 // Actions
 const GET_EMPLOYEES = "GET_EMPLOYEES";
+const ADD_PAGE = "ADD_PAGE";
 
 // Export Functions
-export function getEmpoyees(page = 1) {
+export function getEmpoyees() {
   const data = fetch(
-    `https://dt-interviews.appspot.com/?page=${page}&per_page=500`
+    `https://dt-interviews.appspot.com/?page=${initialState.page}&per_page=${initialState.persons}`
   ).then((blob) => blob.json());
 
   return {
@@ -34,9 +35,8 @@ export default function reducer(state = initialState, action) {
     case `${GET_EMPLOYEES}_FULFILLED`:
       return {
         ...state,
-        // employees: [...this.state.employees, ...res],
-        employees: payload,
-        scrolling: false,
+        employees: [...state.employees, ...payload],
+        page: state.page + 1,
         loading: false,
       };
 

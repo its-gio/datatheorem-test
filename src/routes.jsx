@@ -5,7 +5,6 @@ import EmployeesList from "./components/EmployeesList";
 import EmployeeForm from "./components/EmployeeForm";
 
 export default function Routes(props) {
-  console.log(props);
   return (
     <Switch>
       <Route path="/employee-form" component={EmployeeForm} />

@@ -10,12 +10,7 @@ export default function Routes(props) {
     <Switch>
       <Route path="/employee-form" component={EmployeeForm} />
       <Route path="/employee/:id" component={Employee} />
-      <Route
-        path="/"
-        component={EmployeesList}
-        employees={props.employees}
-        loading={props.loading}
-      />
+      <Route path="/" component={EmployeesList} />
     </Switch>
   );
 }

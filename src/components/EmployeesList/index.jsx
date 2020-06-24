@@ -1,4 +1,5 @@
 import React from "react";
+import Spinner from "../../img/Loading.gif";
 
 function index(props) {
   // const employeesMapprops = props.employees.map((employee) => (
@@ -9,6 +10,11 @@ function index(props) {
   return (
     <div className="employees-list">
       <h2>Employees List</h2>
+      {/* {
+        props.loading ?
+        <img src={Spinner} alt="Loading Content"/>
+
+      } */}
       {/* <ul>{employeesMapprops}</ul> */}
     </div>
   );

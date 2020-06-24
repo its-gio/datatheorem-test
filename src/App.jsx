@@ -9,6 +9,7 @@ export default class App extends Component {
     persons: 500,
     page: 1,
     scrolling: false,
+    loading: true,
   };
 
   componentDidMount() {
@@ -27,6 +28,7 @@ export default class App extends Component {
         this.setState({
           employees: [...this.state.employees, ...res],
           scrolling: false,
+          loading: false,
         })
       );
   };
@@ -54,7 +56,11 @@ export default class App extends Component {
         <div className="App">
           <h1>City of Chicago Employees</h1>
           {/* If input != '' use filter json */}
-          {Routes}
+          <Routes
+            employees={this.state.employees}
+            employeesFilter={this.state.employeesFilter}
+            loading={this.state.loading}
+          />
         </div>
       </Router>
     );

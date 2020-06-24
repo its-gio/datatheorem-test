@@ -1,0 +1,23 @@
+.employee-form {
+  max-width: 900px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+
+  input {
+    margin: 5px;
+    padding: 10px;
+  }
+
+  &--btn-container {
+    padding: 5px;
+
+    button {
+      padding: 10px;
+    }
+
+    img {
+      max-width: 30px;
+    }
+  }
+}

@@ -5,28 +5,20 @@ import Routes from "./routes";
 import { getEmpoyees } from "./redux/reducers/employeesReducer";
 
 class App extends Component {
-  componentDidMount() {
-    this.props.getEmpoyees();
-    // this.scrollListener = window.addEventListener("scroll", (e) =>
-    //   this.handleScroll(e)
-    // );
-  }
-
-  getContent = () => {
-    // .then((blob) => blob.json())
-    // .then((res) =>
-    //   this.setState({
-    //     employees: [...this.state.employees, ...res],
-    //     scrolling: false,
-    //     loading: false,
-    //   })
+  state = {
+    scrolling: false,
   };
 
-  loadMore = () => {
-    this.setState(
-      (prevState) => ({ page: prevState.page + 1 }),
-      this.getContent
+  componentDidMount() {
+    this.props.getEmpoyees();
+    this.scrollListener = window.addEventListener("scroll", (e) =>
+      this.handleScroll(e)
     );
+  }
+
+  loadMore = () => {
+    this.setState({ scrolling: true });
+    this.props.getEmpoyees();
   };
 
   handleScroll = (e) => {

@@ -3,7 +3,6 @@ const initialState = {
   employeesFilter: [],
   persons: 500,
   page: 1,
-  scrolling: false,
   loading: true,
 };
 
@@ -11,9 +10,9 @@ const initialState = {
 const GET_EMPLOYEES = "GET_EMPLOYEES";
 
 // Export Functions
-export function getEmpoyees() {
+export function getEmpoyees(page = 1) {
   const data = fetch(
-    `https://dt-interviews.appspot.com/?page=1&per_page=500`
+    `https://dt-interviews.appspot.com/?page=${page}&per_page=500`
   ).then((blob) => blob.json());
 
   return {

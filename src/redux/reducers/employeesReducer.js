@@ -1,6 +1,7 @@
 const initialState = {
   employees: [],
   employeesFilter: [],
+  employee: null,
   persons: 500,
   page: 1,
   focus: null,
@@ -10,6 +11,8 @@ const initialState = {
 // Actions
 const GET_EMPLOYEES = "GET_EMPLOYEES";
 const CHANGE_FOCUS = "CHANGE_FOCUS";
+const GET_EMPLOYEE = "GET_EMPLOYEE";
+const test = "test";
 
 // Export Functions
 export function getEmpoyees() {
@@ -27,6 +30,26 @@ export function changeFocus(id) {
   return {
     type: CHANGE_FOCUS,
     payload: id,
+  };
+}
+
+export function keyPress(e, focus) {
+  console.log(focus);
+  if (e.keyCode === 13 && focus) {
+    console.log(focus);
+    const data = fetch(
+      `https://dt-interviews.appspot.com/${focus}`
+    ).then((blob) => blob.json());
+
+    return {
+      type: GET_EMPLOYEE,
+      payload: data,
+    };
+  }
+
+  return {
+    type: test,
+    payload: {},
   };
 }
 
@@ -59,6 +82,30 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         focus: payload,
+      };
+
+    case `${GET_EMPLOYEE}_PENDING`:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case `${GET_EMPLOYEE}_FULFILLED`:
+      return {
+        ...state,
+        employee: payload,
+        loading: false,
+      };
+
+    case `${GET_EMPLOYEE}_REJECTED`:
+      return {
+        ...state,
+        loading: false,
+      };
+
+    case test:
+      return {
+        ...state,
       };
 
     default:

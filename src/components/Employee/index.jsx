@@ -18,7 +18,6 @@ class index extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log(`${this.props.focus} ${prevProps.focus}`);
     if (this.props.focus !== prevProps.focus) {
       this.props.getEmployee(this.props.focus);
       this.props.history.push(`/employee/${this.props.focus}`);
@@ -28,7 +27,11 @@ class index extends Component {
     if (e.keyCode === 13) {
       this.props.history.push(`/`);
     } else {
-      this.props.arrowChangeFocus(this.props.focus, e.keyCode);
+      this.props.arrowChangeFocus(
+        this.props.focus,
+        e.keyCode,
+        this.props.count
+      );
     }
   };
 
@@ -53,6 +56,7 @@ const mapStateToProps = (reduxState) => ({
   employee: reduxState.employees.employee,
   loading: reduxState.employees.loading,
   focus: reduxState.employees.focus,
+  count: reduxState.employees.employeesCount,
 });
 
 export default connect(mapStateToProps, { getEmployee, arrowChangeFocus })(

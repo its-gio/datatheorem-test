@@ -46,13 +46,13 @@ export function clickChangeFocus(id) {
   };
 }
 
-export function arrowChangeFocus(focus, keyCode) {
+export function arrowChangeFocus(focus, keyCode, count) {
   if (focus > 1 && keyCode === 38) {
     return {
       type: ARROW_UP_CHANGE_FOCUS,
       payload: focus - 1,
     };
-  } else if (focus < 1 && keyCode === 40) {
+  } else if (focus <= count && keyCode === 40) {
     return {
       type: ARROW_DOWN_CHANGE_FOCUS,
       payload: focus + 1,
@@ -75,9 +75,13 @@ export default function reducer(state = initialState, action) {
       };
 
     case `${GET_EMPLOYEES}_FULFILLED`:
+      const fullEmployees = [...state.employees, ...payload];
+      const fullEmployeesLength = fullEmployees.length;
+
       return {
         ...state,
-        employees: [...state.employees, ...payload],
+        employees: fullEmployees,
+        employeesCount: fullEmployeesLength,
         page: state.page + 1,
         loading: false,
       };

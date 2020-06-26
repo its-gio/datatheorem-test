@@ -51,6 +51,7 @@ const mapStateToProps = (reduxState) => ({
   loading: reduxState.employees.loading,
   page: reduxState.employees.page,
   focus: reduxState.employees.focus,
+  count: reduxState.employees.employeesCount,
 });
 
 export default connect(mapStateToProps, {})(index);

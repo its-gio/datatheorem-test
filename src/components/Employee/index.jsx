@@ -10,11 +10,11 @@ import {
 class index extends Component {
   componentDidMount() {
     this.props.getEmployee(this.props.match.params.id);
-    document.addEventListener("keydown", this.handleKeyDown);
+    document.addEventListener("keyup", this.handleKeyUp);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.handleKeyDown);
+    document.removeEventListener("keyup", this.handleKeyUp);
   }
 
   componentDidUpdate(prevProps) {
@@ -23,7 +23,8 @@ class index extends Component {
       this.props.history.push(`/employee/${this.props.focus}`);
     }
   }
-  handleKeyDown = (e) => {
+
+  handleKeyUp = (e) => {
     if (e.keyCode === 13) {
       this.props.history.push(`/`);
     } else {
@@ -36,7 +37,7 @@ class index extends Component {
   };
 
   render() {
-    return this.props.loading ? (
+    return this.props.loading || this.props.employee === null ? (
       <img src={Spinner} alt="Loading Content" />
     ) : (
       <div>

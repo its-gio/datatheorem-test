@@ -7,14 +7,14 @@ import { arrowChangeFocus } from "../../redux/reducers/employeesReducer";
 
 class index extends Component {
   componentDidMount() {
-    document.addEventListener("keyup", this.handleKeyUp);
+    document.addEventListener("keydown", this.handleKeyDown);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("keyup", this.handleKeyUp);
+    document.removeEventListener("keydown", this.handleKeyDown);
   }
 
-  handleKeyUp = (e) => {
+  handleKeyDown = (e) => {
     if (e.keyCode === 13 && this.props.focus) {
       this.props.history.push(`/employee/${this.props.focus}`);
     } else {

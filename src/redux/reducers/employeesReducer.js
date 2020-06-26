@@ -1,3 +1,4 @@
+const proxy = "https://cors-anywhere.herokuapp.com/";
 const initialState = {
   employees: [],
   employeesFilter: [],
@@ -12,6 +13,7 @@ const initialState = {
 // Actions
 const GET_EMPLOYEES = "GET_EMPLOYEES";
 const GET_EMPLOYEE = "GET_EMPLOYEE";
+const POST_EMPLOYEE = "POST_EMPLOYEE";
 const CLICK_CHANGE_FOCUS = "CLICK_CHANGE_FOCUS";
 const ARROW_UP_CHANGE_FOCUS = "ARROW_UP_CHANGE_FOCUS";
 const ARROW_DOWN_CHANGE_FOCUS = "ARROW_DOWN_CHANGE_FOCUS";
@@ -35,6 +37,29 @@ export function getEmployee(focus) {
 
   return {
     type: GET_EMPLOYEE,
+    payload: data,
+  };
+}
+
+export function postEmployee({ name, department, salary_string, job_titles }) {
+  const employee_annual_salary = Number(salary_string).toFixed(2);
+  const data = fetch(`${proxy}https://dt-interviews.appspot.com/`, {
+    method: "POST",
+    headers: {
+      // prettier-ignore
+      "Accept": "application/json, text/plain, */*",
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      name,
+      department,
+      employee_annual_salary,
+      job_titles,
+    }),
+  }).then((blob) => blob.json());
+
+  return {
+    type: POST_EMPLOYEE,
     payload: data,
   };
 }
@@ -87,6 +112,7 @@ export default function reducer(state = initialState, action) {
       };
 
     case `${GET_EMPLOYEES}_REJECTED`:
+      console.error(payload);
       return {
         ...state,
         loading: false,
@@ -106,6 +132,27 @@ export default function reducer(state = initialState, action) {
       };
 
     case `${GET_EMPLOYEE}_REJECTED`:
+      console.error(payload);
+      return {
+        ...state,
+        loading: false,
+      };
+
+    case `${POST_EMPLOYEE}_PENDING`:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case `${POST_EMPLOYEE}_FULFILLED`:
+      console.log(payload);
+      return {
+        ...state,
+        loading: false,
+      };
+
+    case `${POST_EMPLOYEE}_REJECTED`:
+      console.error(payload);
       return {
         ...state,
         loading: false,

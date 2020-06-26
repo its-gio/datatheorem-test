@@ -1,13 +1,14 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import spinner from "../../img/Loading.gif";
+import { postEmployee } from "../../redux/reducers/employeesReducer";
 
-export default class index extends Component {
+class index extends Component {
   state = {
     name: "",
     department: "",
     salary_string: null,
     job_titles: "",
-    loading: false,
   };
 
   handleFormChange = (e) => {
@@ -16,29 +17,9 @@ export default class index extends Component {
 
   handleFormSubmit = (e) => {
     e.preventDefault();
-    this.setState({ loading: true });
-    let { name, department, salary_string, job_titles } = this.state;
-    const employee_annual_salary = Number(salary_string).toFixed(2);
-    const proxy = "https://cors-anywhere.herokuapp.com/";
-    fetch(`${proxy}https://dt-interviews.appspot.com/`, {
-      method: "POST",
-      headers: {
-        // prettier-ignore
-        "Accept": "application/json, text/plain, */*",
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        department,
-        employee_annual_salary,
-        job_titles,
-      }),
-    })
-      .then((blob) => blob.json())
-      .then((data) => {
-        this.props.history.push("/");
-      })
-      .catch((err) => console.error(err));
+    new Promise((res, rej) => {
+      res(this.props.postEmployee(this.state));
+    }).then(() => this.props.history.push("/"));
   };
 
   render() {
@@ -63,6 +44,7 @@ export default class index extends Component {
           name="salary_string"
           type="number"
           placeholder="Annual Salary"
+          step=".01"
           required
         />
         <input
@@ -73,7 +55,7 @@ export default class index extends Component {
           required
         />
         <div className="employee-form--btn-container">
-          {this.state.loading ? (
+          {this.props.loading ? (
             <img src={spinner} alt="Loading Submit" />
           ) : (
             <button type="submit">Submit</button>
@@ -83,3 +65,8 @@ export default class index extends Component {
     );
   }
 }
+
+const mapStateToProps = (reduxState) => ({
+  loading: reduxState.employees.loading,
+});
+export default connect(mapStateToProps, { postEmployee })(index);

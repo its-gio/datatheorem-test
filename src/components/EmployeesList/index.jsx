@@ -3,18 +3,21 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import EmlpoyeeesMap from "./EmlpoyeeesMap";
 import Spinner from "../../img/Loading.gif";
-import { keyPress } from "../../redux/reducers/employeesReducer";
 
 class index extends Component {
   componentDidMount() {
-    document.addEventListener("keydown", (e) => {
-      console.log(this.props.focus);
-      if (e.keyCode === 13) {
-        this.props.keyPress(e, this.props.focus);
-        this.props.history.push(`/employee/${this.props.focus}`);
-      }
-    });
+    document.addEventListener("keydown", this.handleKeydown);
   }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.handleKeydown);
+  }
+
+  handleKeydown = (e) => {
+    if (e.keyCode === 13 && this.props.focus) {
+      this.props.history.push(`/employee/${this.props.focus}`);
+    }
+  };
 
   render() {
     const employeesMapped = this.props.employees.map((employee) => (
@@ -50,4 +53,4 @@ const mapStateToProps = (reduxState) => ({
   focus: reduxState.employees.focus,
 });
 
-export default connect(mapStateToProps, { keyPress })(index);
+export default connect(mapStateToProps, {})(index);

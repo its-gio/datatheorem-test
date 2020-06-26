@@ -1,6 +1,7 @@
 const initialState = {
   employees: [],
   employeesFilter: [],
+  employeesCount: null,
   employee: null,
   persons: 500,
   page: 1,
@@ -10,25 +11,20 @@ const initialState = {
 
 // Actions
 const GET_EMPLOYEES = "GET_EMPLOYEES";
-const CHANGE_FOCUS = "CHANGE_FOCUS";
 const GET_EMPLOYEE = "GET_EMPLOYEE";
+const CLICK_CHANGE_FOCUS = "CLICK_CHANGE_FOCUS";
+const ARROW_UP_CHANGE_FOCUS = "ARROW_UP_CHANGE_FOCUS";
+const ARROW_DOWN_CHANGE_FOCUS = "ARROW_DOWN_CHANGE_FOCUS";
 
 // Export Functions
 export function getEmpoyees() {
   const data = fetch(
-    `https://dt-interviews.appspot.com/?page=${initialState.page}&per_page=${initialState.persons}`
+    `https://dt-interviews.appspot.com/?page=1&per_page=500`
   ).then((blob) => blob.json());
 
   return {
     type: GET_EMPLOYEES,
     payload: data,
-  };
-}
-
-export function changeFocus(id) {
-  return {
-    type: CHANGE_FOCUS,
-    payload: id,
   };
 }
 
@@ -40,6 +36,31 @@ export function getEmployee(focus) {
   return {
     type: GET_EMPLOYEE,
     payload: data,
+  };
+}
+
+export function clickChangeFocus(id) {
+  return {
+    type: CLICK_CHANGE_FOCUS,
+    payload: id,
+  };
+}
+
+export function arrowChangeFocus(focus, keyCode) {
+  if (focus > 1 && keyCode === 38) {
+    return {
+      type: ARROW_UP_CHANGE_FOCUS,
+      payload: focus - 1,
+    };
+  } else if (focus < 1 && keyCode === 40) {
+    return {
+      type: ARROW_DOWN_CHANGE_FOCUS,
+      payload: focus + 1,
+    };
+  }
+  return {
+    type: ARROW_UP_CHANGE_FOCUS,
+    payload: focus,
   };
 }
 
@@ -67,13 +88,6 @@ export default function reducer(state = initialState, action) {
         loading: false,
       };
 
-    case CHANGE_FOCUS:
-      console.log(payload);
-      return {
-        ...state,
-        focus: payload,
-      };
-
     case `${GET_EMPLOYEE}_PENDING`:
       return {
         ...state,
@@ -91,6 +105,24 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
+      };
+
+    case CLICK_CHANGE_FOCUS:
+      return {
+        ...state,
+        focus: payload,
+      };
+
+    case ARROW_UP_CHANGE_FOCUS:
+      return {
+        ...state,
+        focus: payload,
+      };
+
+    case ARROW_DOWN_CHANGE_FOCUS:
+      return {
+        ...state,
+        focus: payload,
       };
 
     default:

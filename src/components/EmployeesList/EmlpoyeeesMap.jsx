@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { changeFocus } from "../../redux/reducers/employeesReducer";
+import { clickChangeFocus } from "../../redux/reducers/employeesReducer";
 
 function EmlpoyeeesMap(props) {
   return (
     <li
-      onClick={() => props.changeFocus(props.id)}
+      onClick={() => props.clickChangeFocus(props.id)}
       id={props.id}
       className={
         props.focus === props.id
@@ -22,4 +22,4 @@ const mapStateToProps = (reduxState) => ({
   focus: reduxState.employees.focus,
 });
 
-export default connect(mapStateToProps, { changeFocus })(EmlpoyeeesMap);
+export default connect(mapStateToProps, { clickChangeFocus })(EmlpoyeeesMap);

@@ -2,13 +2,14 @@ const proxy = "https://cors-anywhere.herokuapp.com/";
 const initialState = {
   employees: [],
   employeesFilter: [],
-  employeesShown: [],
+  employeesDisplay: [],
   employeesCount: null,
   employeesFilterCount: null,
-  employeesShownCount: null,
   employee: null,
   persons: 500,
   page: 1,
+  peopleShown: 500,
+  pageShown: 1,
   focus: null,
   loading: true,
 };
@@ -76,13 +77,10 @@ export function postEmployee({ name, department, salary_string, job_titles }) {
   };
 }
 
-export function showNextEmployees(count) {
-  const data = new Promise((res, rej) => {
-    res(count);
-  });
+export function showNextEmployees() {
   return {
     type: SHOW_NEXT_EMPLOYEES,
-    payload: data,
+    payload: {},
   };
 }
 
@@ -128,9 +126,8 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         employees: fullEmployees,
-        employeesShown: fullEmployees,
+        employeesDisplay: fullEmployees,
         employeesCount: fullEmployeesLength,
-        employeesShownCount: fullEmployeesLength,
         page: state.page + 1,
         loading: false,
       };
@@ -219,16 +216,14 @@ export default function reducer(state = initialState, action) {
       };
 
     case `${SHOW_NEXT_EMPLOYEES}_FULFILLED`:
-      const employeesShown = [
-        ...state.employeesShown,
-        ...state.employees.slice(payload, payload + 500),
-      ];
-      const employeesShownCount = employeesShown.length;
-
+      const iOfLastEmployee = state.pageShown * state.peopleShown;
+      const iOfFirstEmployee = iOfLastEmployee - state.peopleShown;
       return {
         ...state,
-        employeesShown,
-        employeesShownCount,
+        employeesDisplay: state.employees.slice(
+          iOfLastEmployee,
+          iOfFirstEmployee
+        ),
         loading: false,
       };
 

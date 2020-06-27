@@ -34,7 +34,6 @@ class App extends Component {
 }
 
 const mapStateToProps = (reduxState) => ({
-  employees: reduxState.employees.employees,
   persons: reduxState.employees.persons,
   page: reduxState.employees.page,
 });

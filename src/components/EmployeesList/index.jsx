@@ -3,9 +3,16 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import EmlpoyeeesMap from "./EmlpoyeeesMap";
 import Spinner from "../../img/Loading.gif";
-import { arrowChangeFocus } from "../../redux/reducers/employeesReducer";
+import {
+  arrowChangeFocus,
+  showNextEmployees,
+} from "../../redux/reducers/employeesReducer";
 
 function Index(props) {
+  useEffect(() => {
+    showNextEmployees();
+  }, []);
+
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
 
@@ -19,22 +26,17 @@ function Index(props) {
     if (e.keyCode === 13 && props.focus) {
       props.history.push(`/employee/${props.focus}`);
     } else {
-      props.arrowChangeFocus(
-        props.focus,
-        e.keyCode,
-        props.employeesShownCount - 1
-      );
+      props.arrowChangeFocus(props.focus, e.keyCode, props.peopleShown - 1);
     }
   }
 
-  const employeesMapped = props.employeesShown.map((employee) => {
+  const employeesMapped = props.employeesDisplay.map((employee) => {
     return (
       <EmlpoyeeesMap
         key={employee.id}
         id={employee.id}
         job_titles={employee.job_titles}
         name={employee.name}
-        fullCount={props.employeesCount}
       />
     );
   });
@@ -56,11 +58,14 @@ function Index(props) {
 }
 
 const mapStateToProps = (reduxState) => ({
-  employeesShown: reduxState.employees.employeesShown,
-  employeesShownCount: reduxState.employees.employeesShownCount,
-  employeesCount: reduxState.employees.employeesCount,
+  employeesDisplay: reduxState.employees.employeesDisplay,
   loading: reduxState.employees.loading,
   focus: reduxState.employees.focus,
+  peopleShown: reduxState.employees.peopleShown,
+  pageShown: reduxState.employees.pageShown,
 });
 
-export default connect(mapStateToProps, { arrowChangeFocus })(Index);
+export default connect(mapStateToProps, {
+  arrowChangeFocus,
+  showNextEmployees,
+})(Index);

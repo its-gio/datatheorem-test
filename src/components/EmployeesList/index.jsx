@@ -22,18 +22,19 @@ function Index(props) {
       props.arrowChangeFocus(
         props.focus,
         e.keyCode,
-        props.employeesFilterCount - 1
+        props.employeesShownCount - 1
       );
     }
   }
 
-  const employeesMapped = props.employeesFilter.map((employee) => {
+  const employeesMapped = props.employeesShown.map((employee) => {
     return (
       <EmlpoyeeesMap
         key={employee.id}
         id={employee.id}
         job_titles={employee.job_titles}
         name={employee.name}
+        fullCount={props.employeesCount}
       />
     );
   });
@@ -55,8 +56,9 @@ function Index(props) {
 }
 
 const mapStateToProps = (reduxState) => ({
-  employeesFilter: reduxState.employees.employeesFilter,
-  employeesFilterCount: reduxState.employees.employeesFilterCount,
+  employeesShown: reduxState.employees.employeesShown,
+  employeesShownCount: reduxState.employees.employeesShownCount,
+  employeesCount: reduxState.employees.employeesCount,
   loading: reduxState.employees.loading,
   focus: reduxState.employees.focus,
 });

@@ -1,20 +1,33 @@
 import React, { useRef, useCallback } from "react";
 import { connect } from "react-redux";
-import { clickChangeFocus } from "../../redux/reducers/employeesReducer";
+import {
+  clickChangeFocus,
+  showNextEmployees,
+} from "../../redux/reducers/employeesReducer";
 
 function EmlpoyeeesMap(props) {
   const observer = useRef();
-  const lastEmployeeRef = useCallback((node) => {
-    if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver((entry) => {
-      if (entry[0].isIntersecting) {
-        console.log("Visable");
-      }
-    });
-    if (node) observer.current.observe(node);
-  }, []);
+  const lastEmployeeRef = useCallback(
+    (node) => {
+      if (props.loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entry) => {
+        if (
+          entry[0].isIntersecting &&
+          props.employeesShownCount !== props.fullCount
+        ) {
+          console.log("Loading Show");
+          props.showNextEmployees(props.employeesShownCount);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [props.load]
+  );
 
-  if (props.id === props.employeesFilterCount) {
+  if (props.id === props.employeesShownCount) {
+    console.log(props.employeesShownCount, props.fullCount);
     return (
       <li
         ref={lastEmployeeRef}
@@ -48,7 +61,10 @@ function EmlpoyeeesMap(props) {
 
 const mapStateToProps = (reduxState) => ({
   focus: reduxState.employees.focus,
-  employeesFilterCount: reduxState.employees.employeesFilterCount,
+  employeesShownCount: reduxState.employees.employeesShownCount,
 });
 
-export default connect(mapStateToProps, { clickChangeFocus })(EmlpoyeeesMap);
+export default connect(mapStateToProps, {
+  clickChangeFocus,
+  showNextEmployees,
+})(EmlpoyeeesMap);

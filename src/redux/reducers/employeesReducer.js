@@ -3,6 +3,7 @@ const initialState = {
   employees: [],
   employeesFilter: [],
   employeesCount: null,
+  employeesFilterCount: null,
   employee: null,
   persons: 500,
   page: 1,
@@ -114,7 +115,9 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         employees: fullEmployees1,
+        employeesFilter: fullEmployees1,
         employeesCount: fullEmployeesLength1,
+        employeesFilterCount: fullEmployeesLength1,
         page: state.page + 1,
         loading: false,
       };

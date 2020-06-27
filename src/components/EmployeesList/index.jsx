@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import EmlpoyeeesMap from "./EmlpoyeeesMap";
@@ -13,28 +13,21 @@ function Index(props) {
       document.removeEventListener("keydown", handleKeyDown);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.focus, props.employeesCount]);
+  }, [props.focus]);
 
   function handleKeyDown(e) {
     if (e.keyCode === 13 && props.focus) {
       props.history.push(`/employee/${props.focus}`);
     } else {
-      props.arrowChangeFocus(props.focus, e.keyCode, props.employeesCount);
+      props.arrowChangeFocus(
+        props.focus,
+        e.keyCode,
+        props.employeesFilterCount - 1
+      );
     }
   }
 
-  const employeesMapped = props.employees.map((employee, i) => {
-    // if (props.employeesCount === i + 1) {
-    //   return (
-    //     <EmlpoyeeesMap
-    //       key={employee.id}
-    //       id={employee.id}
-    //       job_titles={employee.job_titles}
-    //       name={employee.name}
-    //       // ref={this.lastEmployee}
-    //     />
-    //   );
-    // } else {
+  const employeesMapped = props.employeesFilter.map((employee) => {
     return (
       <EmlpoyeeesMap
         key={employee.id}
@@ -43,7 +36,6 @@ function Index(props) {
         name={employee.name}
       />
     );
-    // }
   });
 
   return (
@@ -63,10 +55,10 @@ function Index(props) {
 }
 
 const mapStateToProps = (reduxState) => ({
-  employees: reduxState.employees.employees,
+  employeesFilter: reduxState.employees.employeesFilter,
+  employeesFilterCount: reduxState.employees.employeesFilterCount,
   loading: reduxState.employees.loading,
   focus: reduxState.employees.focus,
-  employeesCount: reduxState.employees.employeesCount,
 });
 
 export default connect(mapStateToProps, { arrowChangeFocus })(Index);

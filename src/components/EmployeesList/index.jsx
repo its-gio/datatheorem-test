@@ -1,64 +1,72 @@
-import React, { Component } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import EmlpoyeeesMap from "./EmlpoyeeesMap";
 import Spinner from "../../img/Loading.gif";
 import { arrowChangeFocus } from "../../redux/reducers/employeesReducer";
 
-class index extends Component {
-  componentDidMount() {
-    document.addEventListener("keydown", this.handleKeyDown);
-  }
+function Index(props) {
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
 
-  componentWillUnmount() {
-    document.removeEventListener("keydown", this.handleKeyDown);
-  }
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.focus, props.employeesCount]);
 
-  handleKeyDown = (e) => {
-    if (e.keyCode === 13 && this.props.focus) {
-      this.props.history.push(`/employee/${this.props.focus}`);
+  function handleKeyDown(e) {
+    if (e.keyCode === 13 && props.focus) {
+      props.history.push(`/employee/${props.focus}`);
     } else {
-      this.props.arrowChangeFocus(
-        this.props.focus,
-        e.keyCode,
-        this.props.count
-      );
+      props.arrowChangeFocus(props.focus, e.keyCode, props.employeesCount);
     }
-  };
+  }
 
-  render() {
-    const employeesMapped = this.props.employees.map((employee) => (
+  const employeesMapped = props.employees.map((employee, i) => {
+    // if (props.employeesCount === i + 1) {
+    //   return (
+    //     <EmlpoyeeesMap
+    //       key={employee.id}
+    //       id={employee.id}
+    //       job_titles={employee.job_titles}
+    //       name={employee.name}
+    //       // ref={this.lastEmployee}
+    //     />
+    //   );
+    // } else {
+    return (
       <EmlpoyeeesMap
         key={employee.id}
         id={employee.id}
         job_titles={employee.job_titles}
         name={employee.name}
       />
-    ));
-
-    return (
-      <div className="employees-list">
-        <div className="employees-list--title">
-          <h2>Employees List</h2>
-          <div className="employees-list--title__link-containter">
-            <Link to="/employee-form">
-              <button>+</button>
-            </Link>
-          </div>
-        </div>
-        <ul>{employeesMapped}</ul>
-        {this.props.loading && <img src={Spinner} alt="Loading Content" />}
-      </div>
     );
-  }
+    // }
+  });
+
+  return (
+    <div className="employees-list">
+      <div className="employees-list--title">
+        <h2>Employees List</h2>
+        <div className="employees-list--title__link-containter">
+          <Link to="/employee-form">
+            <button>+</button>
+          </Link>
+        </div>
+      </div>
+      <ul>{employeesMapped}</ul>
+      {props.loading && <img src={Spinner} alt="Loading Content" />}
+    </div>
+  );
 }
 
 const mapStateToProps = (reduxState) => ({
   employees: reduxState.employees.employees,
   loading: reduxState.employees.loading,
-  page: reduxState.employees.page,
   focus: reduxState.employees.focus,
-  count: reduxState.employees.employeesCount,
+  employeesCount: reduxState.employees.employeesCount,
 });
 
-export default connect(mapStateToProps, { arrowChangeFocus })(index);
+export default connect(mapStateToProps, { arrowChangeFocus })(Index);

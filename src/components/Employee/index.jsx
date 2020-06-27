@@ -10,11 +10,11 @@ import {
 class index extends Component {
   componentDidMount() {
     this.props.getEmployee(this.props.match.params.id);
-    document.addEventListener("keyup", this.handleKeyUp);
+    document.addEventListener("keydown", this.handleKeyEvent);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("keyup", this.handleKeyUp);
+    document.removeEventListener("keydown", this.handleKeyEvent);
   }
 
   componentDidUpdate(prevProps) {
@@ -24,7 +24,7 @@ class index extends Component {
     }
   }
 
-  handleKeyUp = (e) => {
+  handleKeyEvent = (e) => {
     if (e.keyCode === 13) {
       this.props.history.push(`/`);
     } else {

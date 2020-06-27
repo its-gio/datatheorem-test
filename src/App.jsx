@@ -11,25 +11,7 @@ class App extends Component {
 
   componentDidMount() {
     this.props.getEmpoyees();
-    // this.scrollListener = window.addEventListener("scroll", (e) =>
-    //   this.handleScroll(e)
-    // );
   }
-
-  // loadMore = () => {
-  //   this.setState({ scrolling: true });
-  //   this.props.getEmpoyees();
-  // };
-
-  // handleScroll = (e) => {
-  //   if (this.state.scrolling) return;
-  //   const lastLi = document.querySelector(
-  //     "ul > .employees-list--employee:last-child"
-  //   );
-  //   const lastLiOffset = lastLi.offsetTop + lastLi.clientHeight;
-  //   const pageOffset = window.pageYOffset + window.innerHeight;
-  //   if (pageOffset > lastLiOffset - 40) this.loadMore();
-  // };
 
   render() {
     return (

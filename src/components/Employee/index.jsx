@@ -31,7 +31,8 @@ class index extends Component {
       this.props.arrowChangeFocus(
         this.props.focus,
         e.keyCode,
-        this.props.count
+        this.props.iOfFirstEmployee,
+        this.props.iOfLastEmployee
       );
     }
   };
@@ -57,7 +58,8 @@ const mapStateToProps = (reduxState) => ({
   employee: reduxState.employees.employee,
   loading: reduxState.employees.loading,
   focus: reduxState.employees.focus,
-  count: reduxState.employees.employeesCount,
+  iOfFirstEmployee: reduxState.employees.iOfFirstEmployee,
+  iOfLastEmployee: reduxState.employees.iOfLastEmployee,
 });
 
 export default connect(mapStateToProps, { getEmployee, arrowChangeFocus })(

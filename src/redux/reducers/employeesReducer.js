@@ -105,7 +105,7 @@ export function clickChangeFocus(id) {
 
 export function arrowChangeFocus(focus, keyCode, min, max) {
   console.log(max);
-  if (focus > min && keyCode === 38) {
+  if (focus > min + 1 && keyCode === 38) {
     return {
       type: ARROW_UP_CHANGE_FOCUS,
       payload: focus - 1,

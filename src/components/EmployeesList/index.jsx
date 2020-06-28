@@ -32,7 +32,7 @@ function Index(props) {
       props.arrowChangeFocus(
         props.focus,
         e.keyCode,
-        props.iOfFirstEmployee,
+        props.iOfFirstEmployee + 1,
         props.iOfLastEmployee
       );
     }

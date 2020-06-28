@@ -25,8 +25,8 @@ const POST_EMPLOYEE = "POST_EMPLOYEE";
 const SHOW_NEXT_EMPLOYEES = "SHOW_NEXT_EMPLOYEES";
 const CHANGE_PAGE_SHOWN = "CHANGE_PAGE_SHOWN";
 const CLICK_CHANGE_FOCUS = "CLICK_CHANGE_FOCUS";
-const ARROW_UP_CHANGE_FOCUS = "ARROW_UP_CHANGE_FOCUS";
-const ARROW_DOWN_CHANGE_FOCUS = "ARROW_DOWN_CHANGE_FOCUS";
+const ENTER_ON_EMPLOYEE_DISPLAY = "ENTER_ON_EMPLOYEE_DISPLAY";
+const ARROW_CHANGE_FOCUS = "ARROW_CHANGE_FOCUS";
 const HANDLE_FILTER_CHANGE = "HANDLE_FILTER_CHANGE";
 const HANDLE_FILTER_CLEAR = "HANDLE_FILTER_CLEAR";
 
@@ -104,20 +104,28 @@ export function clickChangeFocus(id) {
   };
 }
 
+export function enterOnEmployeeDisplay(focus) {
+  const data = Math.ceil(focus / 500);
+  return {
+    type: ENTER_ON_EMPLOYEE_DISPLAY,
+    payload: data,
+  };
+}
+
 export function arrowChangeFocus(focus, keyCode, min, max) {
-  if (focus > min + 1 && keyCode === 38) {
+  if (focus > min && keyCode === 38) {
     return {
-      type: ARROW_UP_CHANGE_FOCUS,
+      type: ARROW_CHANGE_FOCUS,
       payload: focus - 1,
     };
   } else if (focus < max && keyCode === 40) {
     return {
-      type: ARROW_DOWN_CHANGE_FOCUS,
+      type: ARROW_CHANGE_FOCUS,
       payload: focus + 1,
     };
   }
   return {
-    type: ARROW_UP_CHANGE_FOCUS,
+    type: ARROW_CHANGE_FOCUS,
     payload: focus,
   };
 }
@@ -300,13 +308,13 @@ export default function reducer(state = initialState, action) {
         focus: payload,
       };
 
-    case ARROW_UP_CHANGE_FOCUS:
+    case ENTER_ON_EMPLOYEE_DISPLAY:
       return {
         ...state,
-        focus: payload,
+        pageShown: payload,
       };
 
-    case ARROW_DOWN_CHANGE_FOCUS:
+    case ARROW_CHANGE_FOCUS:
       return {
         ...state,
         focus: payload,

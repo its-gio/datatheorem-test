@@ -5,6 +5,7 @@ import Spinner from "../../img/Loading.gif";
 import {
   getEmployee,
   arrowChangeFocus,
+  enterOnEmployeeDisplay,
 } from "../../redux/reducers/employeesReducer";
 
 class Index extends Component {
@@ -19,6 +20,7 @@ class Index extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.focus !== prevProps.focus) {
+      // If focus changes get new employee and update page
       this.props.getEmployee(this.props.focus);
       this.props.history.push(`/employee/${this.props.focus}`);
     }
@@ -26,13 +28,28 @@ class Index extends Component {
 
   handleKeyEvent = (e) => {
     if (e.keyCode === 13) {
+      // If enter is pressed
+      this.props.enterOnEmployeeDisplay(this.props.focus);
       this.props.history.push(`/`);
-    } else {
+      // } else if (
+      //   this.props.employeesFilterCount &&
+      //   (e.keyCode === 38 || e.keyCode === 40)
+      // ) {
+      // If Filter exists and (Up or Down) is pressed
+      // console.log("Filter Arrow Key!");
+      // this.props.arrowChangeFocus(
+      //   this.props.focus,
+      //   e.keyCode,
+      //   this.props.iOfFirstEmployee,
+      //   this.props.iOfLastEmployee
+      // );
+    } else if (e.keyCode === 38 || e.keyCode === 40) {
+      // If Up or Down is pressed (No filter exists)
       this.props.arrowChangeFocus(
         this.props.focus,
         e.keyCode,
-        this.props.iOfFirstEmployee,
-        this.props.iOfLastEmployee
+        1,
+        this.props.employeesCount
       );
     }
   };
@@ -58,10 +75,14 @@ const mapStateToProps = (reduxState) => ({
   employee: reduxState.employees.employee,
   loading: reduxState.employees.loading,
   focus: reduxState.employees.focus,
+  employeesCount: reduxState.employees.employeesCount,
+  employeesFilterCount: reduxState.employees.employeesFilterCount,
   iOfFirstEmployee: reduxState.employees.iOfFirstEmployee,
   iOfLastEmployee: reduxState.employees.iOfLastEmployee,
 });
 
-export default connect(mapStateToProps, { getEmployee, arrowChangeFocus })(
-  Index
-);
+export default connect(mapStateToProps, {
+  getEmployee,
+  arrowChangeFocus,
+  enterOnEmployeeDisplay,
+})(Index);

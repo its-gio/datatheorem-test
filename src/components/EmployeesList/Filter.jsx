@@ -4,18 +4,13 @@ import { handleFilterChange } from "../../redux/reducers/employeesReducer";
 
 function Filter(props) {
   function handleFilterChange(e) {
-    console.log("Filter Changed");
     props.handleFilterChange(e.target.value);
   }
 
   return (
     <div>
-      <select
-        defaultValue="null"
-        onChange={handleFilterChange}
-        name="department"
-      >
-        <option value="null" disabled>
+      <select defaultValue="" onChange={handleFilterChange} name="department">
+        <option value="" disabled>
           -- Filter Options --
         </option>
         {props.departments.map((department) => (

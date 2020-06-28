@@ -12,24 +12,48 @@ function Pagination(props) {
     pageNumbers.push(i);
   }
 
+  function checkDisplay(condition, num) {
+    if (condition === "greater" && props.pageShown > num) {
+      return "";
+    } else if (
+      condition === "less" &&
+      props.pageShown + num <= pageNumbers.length
+    ) {
+      return "";
+    }
+    return "hidden";
+  }
+
   return (
     <div className="pagination">
       <ul className="pagination--inner">
-        {pageNumbers.map((num) => {
-          return (
-            <li
-              onClick={() => props.changePage(num)}
-              className={
-                num === props.pageShown
-                  ? "pagination--inner__num active"
-                  : "pagination--inner__num"
-              }
-              key={num}
-            >
-              {num}
-            </li>
-          );
-        })}
+        <li
+          className={`pagination--inner__num ${checkDisplay("greater", 1)}`}
+          onClick={() => props.changePage(1)}
+        >
+          1
+        </li>
+        <span className={`${checkDisplay("greater", 3)}`}>...</span>
+        <li
+          className={`pagination--inner__num ${checkDisplay("greater", 2)}`}
+          onClick={() => props.changePage(props.pageShown - 1)}
+        >
+          {props.pageShown - 1}
+        </li>
+        <li className="pagination--inner__num active">{props.pageShown}</li>
+        <li
+          className={`pagination--inner__num ${checkDisplay("less", 2)}`}
+          onClick={() => props.changePage(props.pageShown + 1)}
+        >
+          {props.pageShown + 1}
+        </li>
+        <span className={`${checkDisplay("less", 3)}`}>...</span>
+        <li
+          className={`pagination--inner__num ${checkDisplay("less", 1)}`}
+          onClick={() => props.changePage(pageNumbers.length)}
+        >
+          {pageNumbers.length}
+        </li>
       </ul>
     </div>
   );

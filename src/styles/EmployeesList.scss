@@ -33,6 +33,12 @@
   .pagination {
     &--inner {
       display: flex;
+      justify-content: center;
+      align-items: baseline;
+
+      .hidden {
+        display: none;
+      }
 
       &__num {
         border: 1px solid #aaa;

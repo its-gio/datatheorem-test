@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import EmlpoyeeesMap from "./EmlpoyeeesMap";
+import Pagination from "./Pagination";
 import Spinner from "../../img/Loading.gif";
 import {
   arrowChangeFocus,
@@ -10,8 +11,9 @@ import {
 
 function Index(props) {
   useEffect(() => {
-    showNextEmployees();
-  }, []);
+    props.showNextEmployees();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.pageShown]);
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
@@ -53,6 +55,7 @@ function Index(props) {
       </div>
       <ul>{employeesMapped}</ul>
       {props.loading && <img src={Spinner} alt="Loading Content" />}
+      <Pagination />
     </div>
   );
 }
@@ -61,8 +64,8 @@ const mapStateToProps = (reduxState) => ({
   employeesDisplay: reduxState.employees.employeesDisplay,
   loading: reduxState.employees.loading,
   focus: reduxState.employees.focus,
-  peopleShown: reduxState.employees.peopleShown,
   pageShown: reduxState.employees.pageShown,
+  peopleShown: reduxState.employees.peopleShown,
 });
 
 export default connect(mapStateToProps, {

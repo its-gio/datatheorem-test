@@ -3,6 +3,8 @@ const initialState = {
   employees: [],
   employeesFilter: [],
   employeesDisplay: [],
+  departments: [],
+  department: null,
   employeesCount: null,
   employeesFilterCount: null,
   employee: null,
@@ -20,6 +22,7 @@ const BACKGROUND_GET_EMPLOYEES = "BACKGROUND_GET_EMPLOYEES";
 const GET_EMPLOYEE = "GET_EMPLOYEE";
 const POST_EMPLOYEE = "POST_EMPLOYEE";
 const SHOW_NEXT_EMPLOYEES = "SHOW_NEXT_EMPLOYEES";
+const CHANGE_PAGE_SHOWN = "CHANGE_PAGE_SHOWN";
 const CLICK_CHANGE_FOCUS = "CLICK_CHANGE_FOCUS";
 const ARROW_UP_CHANGE_FOCUS = "ARROW_UP_CHANGE_FOCUS";
 const ARROW_DOWN_CHANGE_FOCUS = "ARROW_DOWN_CHANGE_FOCUS";
@@ -80,7 +83,14 @@ export function postEmployee({ name, department, salary_string, job_titles }) {
 export function showNextEmployees() {
   return {
     type: SHOW_NEXT_EMPLOYEES,
-    payload: {},
+    payload: null,
+  };
+}
+
+export function changePage(pageNum) {
+  return {
+    type: CHANGE_PAGE_SHOWN,
+    payload: pageNum,
   };
 }
 
@@ -209,22 +219,24 @@ export default function reducer(state = initialState, action) {
         loading: false,
       };
 
-    case `${SHOW_NEXT_EMPLOYEES}_PENDING`:
-      return {
-        ...state,
-        loading: true,
-      };
-
-    case `${SHOW_NEXT_EMPLOYEES}_FULFILLED`:
+    case SHOW_NEXT_EMPLOYEES:
+      console.log("Hitting next Employees!");
       const iOfLastEmployee = state.pageShown * state.peopleShown;
       const iOfFirstEmployee = iOfLastEmployee - state.peopleShown;
+
       return {
         ...state,
         employeesDisplay: state.employees.slice(
-          iOfLastEmployee,
-          iOfFirstEmployee
+          iOfFirstEmployee,
+          iOfLastEmployee
         ),
         loading: false,
+      };
+
+    case CHANGE_PAGE_SHOWN:
+      return {
+        ...state,
+        pageShown: payload,
       };
 
     case CLICK_CHANGE_FOCUS:

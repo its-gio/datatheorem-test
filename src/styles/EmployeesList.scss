@@ -29,4 +29,26 @@
       color: white;
     }
   }
+
+  .pagination {
+    &--inner {
+      display: flex;
+
+      &__num {
+        border: 1px solid #aaa;
+        padding: 2px 5px;
+        margin: 5px;
+        border-radius: 3px;
+
+        &.active {
+          background-color: #00416a;
+          color: white;
+        }
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
 }

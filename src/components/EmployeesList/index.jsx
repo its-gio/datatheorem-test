@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import Title from "./Title";
 import EmlpoyeeesMap from "./EmlpoyeeesMap";
 import Pagination from "./Pagination";
 import Spinner from "../../img/Loading.gif";
@@ -50,14 +50,7 @@ function Index(props) {
 
   return (
     <div className="employees-list">
-      <div className="employees-list--title">
-        <h2>Employees List</h2>
-        <div className="employees-list--title__link-containter">
-          <Link to="/employee-form">
-            <button>+</button>
-          </Link>
-        </div>
-      </div>
+      <Title />
       <ul>{employeesMapped}</ul>
       {props.loading && <img src={Spinner} alt="Loading Content" />}
       <Pagination />
@@ -70,7 +63,6 @@ const mapStateToProps = (reduxState) => ({
   loading: reduxState.employees.loading,
   focus: reduxState.employees.focus,
   pageShown: reduxState.employees.pageShown,
-  peopleShown: reduxState.employees.peopleShown,
   iOfFirstEmployee: reduxState.employees.iOfFirstEmployee,
   iOfLastEmployee: reduxState.employees.iOfLastEmployee,
 });

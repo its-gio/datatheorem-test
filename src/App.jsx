@@ -25,7 +25,6 @@ class App extends Component {
           <Link to="/">
             <h1>City of Chicago Employees</h1>
           </Link>
-          {/* If input != '' use filter json */}
           <Routes />
         </div>
       </Router>

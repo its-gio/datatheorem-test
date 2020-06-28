@@ -250,7 +250,6 @@ export default function reducer(state = initialState, action) {
         ),
         iOfLastEmployee,
         iOfFirstEmployee,
-        focus: null,
         loading: false,
       };
 

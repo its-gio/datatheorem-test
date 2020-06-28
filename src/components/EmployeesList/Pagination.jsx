@@ -4,11 +4,11 @@ import { changePage } from "../../redux/reducers/employeesReducer";
 
 function Pagination(props) {
   const pageNumbers = [];
-  for (
-    let i = 1;
-    i <= Math.ceil(props.employeesCount / props.peopleShown);
-    i++
-  ) {
+  let pagesCount = props.employeesFilterCount
+    ? Math.ceil(props.employeesFilterCount / props.peopleShown)
+    : Math.ceil(props.employeesCount / props.peopleShown);
+
+  for (let i = 1; i <= pagesCount; i++) {
     pageNumbers.push(i);
   }
 
@@ -39,6 +39,7 @@ const mapStateToProps = (reduxState) => ({
   peopleShown: reduxState.employees.peopleShown,
   employeesCount: reduxState.employees.employeesCount,
   pageShown: reduxState.employees.pageShown,
+  employeesFilterCount: reduxState.employees.employeesFilterCount,
 });
 
 export default connect(mapStateToProps, { changePage })(Pagination);

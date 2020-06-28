@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import spinner from "../../img/Loading.gif";
 import { postEmployee } from "../../redux/reducers/employeesReducer";
 
-class index extends Component {
+class Index extends Component {
   state = {
     name: "",
     department: "",
@@ -69,4 +69,4 @@ class index extends Component {
 const mapStateToProps = (reduxState) => ({
   loading: reduxState.employees.loading,
 });
-export default connect(mapStateToProps, { postEmployee })(index);
+export default connect(mapStateToProps, { postEmployee })(Index);

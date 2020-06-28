@@ -7,7 +7,7 @@ import {
   arrowChangeFocus,
 } from "../../redux/reducers/employeesReducer";
 
-class index extends Component {
+class Index extends Component {
   componentDidMount() {
     this.props.getEmployee(this.props.match.params.id);
     document.addEventListener("keydown", this.handleKeyEvent);
@@ -63,5 +63,5 @@ const mapStateToProps = (reduxState) => ({
 });
 
 export default connect(mapStateToProps, { getEmployee, arrowChangeFocus })(
-  index
+  Index
 );

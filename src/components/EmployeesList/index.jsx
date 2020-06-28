@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import Title from "./Title";
+import Filter from "./Filter";
 import EmlpoyeeesMap from "./EmlpoyeeesMap";
 import Pagination from "./Pagination";
 import Spinner from "../../img/Loading.gif";
@@ -51,6 +52,7 @@ function Index(props) {
   return (
     <div className="employees-list">
       <Title />
+      <Filter />
       <ul>{employeesMapped}</ul>
       {props.loading && <img src={Spinner} alt="Loading Content" />}
       <Pagination />

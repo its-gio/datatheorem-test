@@ -11,7 +11,7 @@ class App extends Component {
 
   gettingEmployees = () => {
     new Promise((res, rej) => {
-      res(this.props.getEmpoyees(this.props.page, this.props.persons));
+      res(this.props.getEmpoyees(this.props.APIPage, this.props.APIPeople));
     }).then((data) => {
       if (data.action.payload.length === 0) return console.log("finished!");
       this.gettingEmployees();
@@ -33,8 +33,8 @@ class App extends Component {
 }
 
 const mapStateToProps = (reduxState) => ({
-  persons: reduxState.employees.persons,
-  page: reduxState.employees.page,
+  APIPeople: reduxState.employees.APIPeople,
+  APIPage: reduxState.employees.APIPage,
 });
 
 export default connect(mapStateToProps, { getEmpoyees })(App);

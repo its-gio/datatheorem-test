@@ -4,12 +4,11 @@ const initialState = {
   employeesFilter: [],
   employeesDisplay: [],
   departments: [],
-  department: null,
   employeesCount: null,
   employeesFilterCount: null,
   employee: null,
-  persons: 500,
-  page: 1,
+  APIPeople: 500,
+  APIPage: 1,
   peopleShown: 500,
   pageShown: 1,
   iOfLastEmployee: null,
@@ -28,14 +27,16 @@ const CHANGE_PAGE_SHOWN = "CHANGE_PAGE_SHOWN";
 const CLICK_CHANGE_FOCUS = "CLICK_CHANGE_FOCUS";
 const ARROW_UP_CHANGE_FOCUS = "ARROW_UP_CHANGE_FOCUS";
 const ARROW_DOWN_CHANGE_FOCUS = "ARROW_DOWN_CHANGE_FOCUS";
+const HANDLE_FILTER_CHANGE = "HANDLE_FILTER_CHANGE";
+const HANDLE_FILTER_CLEAR = "HANDLE_FILTER_CLEAR";
 
 // Export Functions
-export function getEmpoyees(page, persons) {
+export function getEmpoyees(APIPage, APIPeople) {
   const data = fetch(
-    `https://dt-interviews.appspot.com/?page=${page}&per_page=${persons}`
+    `https://dt-interviews.appspot.com/?page=${APIPage}&per_page=${APIPeople}`
   ).then((blob) => blob.json());
 
-  if (page === 1) {
+  if (APIPage === 1) {
     return {
       type: GET_EMPLOYEES,
       payload: data,
@@ -121,12 +122,33 @@ export function arrowChangeFocus(focus, keyCode, min, max) {
   };
 }
 
+export function handleFilterChange(department) {
+  if (department) {
+    return {
+      type: HANDLE_FILTER_CHANGE,
+      payload: department,
+    };
+  }
+
+  return {
+    type: HANDLE_FILTER_CLEAR,
+    payload: department,
+  };
+}
+
 // Helper Functions
 function reduceDepartments(employees, currentDepartments = []) {
   return employees.reduce((accu, employee) => {
     if (!accu.includes(employee.department)) accu.push(employee.department);
     return accu;
   }, currentDepartments);
+}
+
+function filterByDepartments(employees, department) {
+  return employees.reduce((accu, employee) => {
+    if (employee.department === department) accu.push(employee);
+    return accu;
+  }, []);
 }
 
 // Reducer
@@ -153,7 +175,7 @@ export default function reducer(state = initialState, action) {
         employeesCount: fullEmployeesLength,
         iOfLastEmployee: iOfLastEmployeeFirst,
         iOfFirstEmployee: iOfFirstEmployeeFirst,
-        page: state.page + 1,
+        APIPage: state.APIPage + 1,
         departments: departmentsFirst,
         loading: false,
       };
@@ -178,8 +200,8 @@ export default function reducer(state = initialState, action) {
           employees: fullEmployeesBackground,
           employeesCount: fullEmployeesLengthBackground,
           departments,
-          page: 2,
-          persons: 1000,
+          APIPage: 2,
+          APIPeople: 1000,
         };
       } else {
         return {
@@ -187,7 +209,7 @@ export default function reducer(state = initialState, action) {
           employees: fullEmployeesBackground,
           employeesCount: fullEmployeesLengthBackground,
           departments,
-          page: state.page + 1,
+          APIPage: state.APIPage + 1,
         };
       }
 
@@ -242,6 +264,19 @@ export default function reducer(state = initialState, action) {
       const iOfLastEmployee = state.pageShown * state.peopleShown;
       const iOfFirstEmployee = iOfLastEmployee - state.peopleShown;
 
+      if (state.employeesFilterCount) {
+        return {
+          ...state,
+          employeesDisplay: state.employeesFilter.slice(
+            iOfFirstEmployee,
+            iOfLastEmployee
+          ),
+          iOfLastEmployee,
+          iOfFirstEmployee,
+          loading: false,
+        };
+      }
+
       return {
         ...state,
         employeesDisplay: state.employees.slice(
@@ -275,6 +310,32 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         focus: payload,
+      };
+
+    case HANDLE_FILTER_CLEAR:
+      return {
+        ...state,
+        employeesFilter: [],
+        employeesFilterCount: null,
+      };
+
+    case HANDLE_FILTER_CHANGE:
+      const employeesFilter = filterByDepartments(state.employees, payload);
+      const employeesFilterCount = employeesFilter.length;
+      const iOfLastEmployeeFilter = 1 * state.peopleShown;
+      const iOfFirstEmployeeFilter = iOfLastEmployeeFilter - state.peopleShown;
+
+      return {
+        ...state,
+        employeesFilter,
+        employeesFilterCount,
+        employeesDisplay: employeesFilter.slice(
+          iOfFirstEmployeeFilter,
+          iOfLastEmployeeFilter
+        ),
+        iOfLastEmployeeFilter,
+        iOfFirstEmployeeFilter,
+        pageShown: 1,
       };
 
     default:

@@ -22,13 +22,18 @@ function Index(props) {
       document.removeEventListener("keydown", handleKeyDown);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.focus]);
+  }, [props.focus, props.pageShown]);
 
   function handleKeyDown(e) {
     if (e.keyCode === 13 && props.focus) {
       props.history.push(`/employee/${props.focus}`);
     } else {
-      props.arrowChangeFocus(props.focus, e.keyCode, props.peopleShown - 1);
+      props.arrowChangeFocus(
+        props.focus,
+        e.keyCode,
+        props.iOfFirstEmployee,
+        props.iOfLastEmployee
+      );
     }
   }
 
@@ -66,6 +71,8 @@ const mapStateToProps = (reduxState) => ({
   focus: reduxState.employees.focus,
   pageShown: reduxState.employees.pageShown,
   peopleShown: reduxState.employees.peopleShown,
+  iOfFirstEmployee: reduxState.employees.iOfFirstEmployee,
+  iOfLastEmployee: reduxState.employees.iOfLastEmployee,
 });
 
 export default connect(mapStateToProps, {

@@ -12,6 +12,8 @@ const initialState = {
   page: 1,
   peopleShown: 500,
   pageShown: 1,
+  iOfLastEmployee: null,
+  iOfFirstEmployee: null,
   focus: null,
   loading: true,
 };
@@ -101,13 +103,14 @@ export function clickChangeFocus(id) {
   };
 }
 
-export function arrowChangeFocus(focus, keyCode, count) {
-  if (focus > 1 && keyCode === 38) {
+export function arrowChangeFocus(focus, keyCode, min, max) {
+  console.log(max);
+  if (focus > min && keyCode === 38) {
     return {
       type: ARROW_UP_CHANGE_FOCUS,
       payload: focus - 1,
     };
-  } else if (focus <= count && keyCode === 40) {
+  } else if (focus < max && keyCode === 40) {
     return {
       type: ARROW_DOWN_CHANGE_FOCUS,
       payload: focus + 1,
@@ -132,12 +135,16 @@ export default function reducer(state = initialState, action) {
     case `${GET_EMPLOYEES}_FULFILLED`:
       let fullEmployees = [...state.employees, ...payload];
       let fullEmployeesLength = fullEmployees.length;
+      const iOfLastEmployeeFirst = state.pageShown * state.peopleShown;
+      const iOfFirstEmployeeFirst = iOfLastEmployeeFirst - state.peopleShown;
 
       return {
         ...state,
         employees: fullEmployees,
         employeesDisplay: fullEmployees,
         employeesCount: fullEmployeesLength,
+        iOfLastEmployee: iOfLastEmployeeFirst,
+        iOfFirstEmployee: iOfFirstEmployeeFirst,
         page: state.page + 1,
         loading: false,
       };
@@ -220,7 +227,6 @@ export default function reducer(state = initialState, action) {
       };
 
     case SHOW_NEXT_EMPLOYEES:
-      console.log("Hitting next Employees!");
       const iOfLastEmployee = state.pageShown * state.peopleShown;
       const iOfFirstEmployee = iOfLastEmployee - state.peopleShown;
 
@@ -230,6 +236,8 @@ export default function reducer(state = initialState, action) {
           iOfFirstEmployee,
           iOfLastEmployee
         ),
+        iOfLastEmployee,
+        iOfFirstEmployee,
         loading: false,
       };
 

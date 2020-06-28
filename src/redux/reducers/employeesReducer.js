@@ -104,7 +104,6 @@ export function clickChangeFocus(id) {
 }
 
 export function arrowChangeFocus(focus, keyCode, min, max) {
-  console.log(max);
   if (focus > min + 1 && keyCode === 38) {
     return {
       type: ARROW_UP_CHANGE_FOCUS,
@@ -122,6 +121,14 @@ export function arrowChangeFocus(focus, keyCode, min, max) {
   };
 }
 
+// Helper Functions
+function reduceDepartments(employees, currentDepartments = []) {
+  return employees.reduce((accu, employee) => {
+    if (!accu.includes(employee.department)) accu.push(employee.department);
+    return accu;
+  }, currentDepartments);
+}
+
 // Reducer
 export default function reducer(state = initialState, action) {
   const { payload } = action;
@@ -137,6 +144,7 @@ export default function reducer(state = initialState, action) {
       let fullEmployeesLength = fullEmployees.length;
       const iOfLastEmployeeFirst = state.pageShown * state.peopleShown;
       const iOfFirstEmployeeFirst = iOfLastEmployeeFirst - state.peopleShown;
+      const departmentsFirst = reduceDepartments(fullEmployees);
 
       return {
         ...state,
@@ -146,6 +154,7 @@ export default function reducer(state = initialState, action) {
         iOfLastEmployee: iOfLastEmployeeFirst,
         iOfFirstEmployee: iOfFirstEmployeeFirst,
         page: state.page + 1,
+        departments: departmentsFirst,
         loading: false,
       };
 
@@ -159,6 +168,7 @@ export default function reducer(state = initialState, action) {
     case `${BACKGROUND_GET_EMPLOYEES}_FULFILLED`:
       let fullEmployeesBackground = [...state.employees, ...payload];
       let fullEmployeesLengthBackground = fullEmployeesBackground.length;
+      let departments = reduceDepartments(payload, state.departments);
 
       if (payload.length === 0) {
         return { ...state };
@@ -167,6 +177,7 @@ export default function reducer(state = initialState, action) {
           ...state,
           employees: fullEmployeesBackground,
           employeesCount: fullEmployeesLengthBackground,
+          departments,
           page: 2,
           persons: 1000,
         };
@@ -175,6 +186,7 @@ export default function reducer(state = initialState, action) {
           ...state,
           employees: fullEmployeesBackground,
           employeesCount: fullEmployeesLengthBackground,
+          departments,
           page: state.page + 1,
         };
       }
@@ -238,6 +250,7 @@ export default function reducer(state = initialState, action) {
         ),
         iOfLastEmployee,
         iOfFirstEmployee,
+        focus: null,
         loading: false,
       };
 

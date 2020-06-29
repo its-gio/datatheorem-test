@@ -107,10 +107,9 @@ export function clickChangeFocus(id) {
 }
 
 export function enterOnEmployeeDisplay(focus) {
-  const page = Math.ceil(focus / 500);
   return {
     type: ENTER_ON_EMPLOYEE_DISPLAY,
-    payload: page,
+    payload: focus,
   };
 }
 
@@ -161,6 +160,17 @@ function filterByDepartments(employees, department) {
     if (employee.department === department) accu.push(employee);
     return accu;
   }, []);
+}
+
+function findFocusIndex(
+  employeesFilterCount,
+  employeesFilter,
+  employees,
+  payload
+) {
+  return employeesFilterCount
+    ? employeesFilter.findIndex((employee) => employee.id === payload)
+    : employees.findIndex((employee) => employee.id === payload);
 }
 
 // Reducer
@@ -313,18 +323,28 @@ export default function reducer(state = initialState, action) {
       };
 
     case ENTER_ON_EMPLOYEE_DISPLAY:
-      const pageShown = state.employeesFilterCount ? state.pageShown : payload;
+      const employeeIndex = findFocusIndex(
+        state.employeesFilterCount,
+        state.employeesFilter,
+        state.employees,
+        payload
+      );
+      const pageShown = Math.ceil((employeeIndex + 1) / 500);
+
       return {
         ...state,
         pageShown,
       };
 
     case ARROW_UP_CHANGE_FOCUS:
-      const indexUp = state.employeesFilterCount
-        ? state.employeesFilter.findIndex((employee) => employee.id === payload)
-        : state.employees.findIndex((employee) => employee.id === payload);
+      const indexUp = findFocusIndex(
+        state.employeesFilterCount,
+        state.employeesFilter,
+        state.employees,
+        payload
+      );
 
-      if (indexUp === 0) return { ...state };
+      if (indexUp === state.employeesFilterCount) return { ...state };
 
       const idUp = state.employeesFilterCount
         ? state.employeesFilter[indexUp - 1].id
@@ -336,10 +356,14 @@ export default function reducer(state = initialState, action) {
       };
 
     case ARROW_DOWN_CHANGE_FOCUS:
-      const indexDown = state.employeesFilterCount
-        ? state.employeesFilter.findIndex((employee) => employee.id === payload)
-        : state.employees.findIndex((employee) => employee.id === payload);
+      const indexDown = findFocusIndex(
+        state.employeesFilterCount,
+        state.employeesFilter,
+        state.employees,
+        payload
+      );
 
+      if (indexDown === 0) return { ...state };
       const idDown = state.employeesFilterCount
         ? state.employeesFilter[indexDown + 1].id
         : state.employees[indexDown + 1].id;

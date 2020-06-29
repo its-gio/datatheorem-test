@@ -137,10 +137,12 @@ export function handleFilterChange(department) {
       payload: department,
     };
   }
+}
 
+export function clearFilter() {
   return {
     type: HANDLE_FILTER_CLEAR,
-    payload: department,
+    payload: {},
   };
 }
 
@@ -319,13 +321,23 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         focus: payload,
+        employeesFilter: [],
+        employeesFilterCount: null,
       };
 
     case HANDLE_FILTER_CLEAR:
+      const iOfLastEmployeeFilterClear = 1 * state.peopleShown;
+      const iOfFirstEmployeeFilterClear =
+        iOfLastEmployeeFilterClear - state.peopleShown;
+
       return {
         ...state,
         employeesFilter: [],
         employeesFilterCount: null,
+        employeesDisplay: state.employees.slice(
+          iOfFirstEmployeeFilterClear,
+          iOfLastEmployeeFilterClear
+        ),
       };
 
     case HANDLE_FILTER_CHANGE:

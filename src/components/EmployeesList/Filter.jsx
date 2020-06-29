@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import { handleFilterChange } from "../../redux/reducers/employeesReducer";
+import {
+  handleFilterChange,
+  clearFilter,
+} from "../../redux/reducers/employeesReducer";
 
 function Filter(props) {
+  const [dropdownValue, setDropdownValue] = useState();
   function handleFilterChange(e) {
+    setDropdownValue(e.target.value);
     props.handleFilterChange(e.target.value);
+  }
+
+  function handleClearBTN() {
+    setDropdownValue("");
+    props.clearFilter();
   }
 
   return (
     <div>
-      <select defaultValue="" onChange={handleFilterChange} name="department">
+      <select
+        value={dropdownValue}
+        defaultValue=""
+        onChange={handleFilterChange}
+        name="department"
+      >
         <option value="" disabled>
           -- Filter Options --
         </option>
@@ -19,6 +34,7 @@ function Filter(props) {
           </option>
         ))}
       </select>
+      <button onClick={handleClearBTN}>Clear Filter</button>
     </div>
   );
 }
@@ -26,8 +42,8 @@ function Filter(props) {
 const mapStateToProps = (reduxState) => ({
   departments: reduxState.employees.departments,
   department: reduxState.employees.department,
-  employeesFilter: reduxState.employees.employeesFilter,
-  employeesFilterCount: reduxState.employees.employeesFilterCount,
 });
 
-export default connect(mapStateToProps, { handleFilterChange })(Filter);
+export default connect(mapStateToProps, { handleFilterChange, clearFilter })(
+  Filter
+);

@@ -25,9 +25,13 @@ function Index(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.focus, props.pageShown]);
 
+  function selectEmployee() {
+    props.history.push(`/employee/${props.focus}`);
+  }
+
   function handleKeyDown(e) {
     if (e.keyCode === 13 && props.focus) {
-      props.history.push(`/employee/${props.focus}`);
+      selectEmployee();
     } else {
       props.arrowChangeFocus(
         props.focus,
@@ -41,6 +45,7 @@ function Index(props) {
   const employeesMapped = props.employeesDisplay.map((employee) => {
     return (
       <EmlpoyeeesMap
+        selectEmployee={selectEmployee}
         key={employee.id}
         id={employee.id}
         job_titles={employee.job_titles}

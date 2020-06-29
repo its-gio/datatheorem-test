@@ -6,6 +6,7 @@ function EmlpoyeeesMap(props) {
   return (
     <li
       onClick={() => props.clickChangeFocus(props.id)}
+      onDoubleClick={() => props.selectEmployee()}
       id={props.id}
       className={
         props.focus === props.id

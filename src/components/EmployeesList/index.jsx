@@ -33,12 +33,7 @@ function Index(props) {
     if (e.keyCode === 13 && props.focus) {
       selectEmployee();
     } else {
-      props.arrowChangeFocus(
-        props.focus,
-        e.keyCode,
-        props.iOfFirstEmployee + 1,
-        props.iOfLastEmployee
-      );
+      props.arrowChangeFocus(props.focus, e.keyCode);
     }
   }
 
@@ -70,8 +65,6 @@ const mapStateToProps = (reduxState) => ({
   loading: reduxState.employees.loading,
   focus: reduxState.employees.focus,
   pageShown: reduxState.employees.pageShown,
-  iOfFirstEmployee: reduxState.employees.iOfFirstEmployee,
-  iOfLastEmployee: reduxState.employees.iOfLastEmployee,
 });
 
 export default connect(mapStateToProps, {

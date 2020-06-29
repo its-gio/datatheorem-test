@@ -113,13 +113,13 @@ export function enterOnEmployeeDisplay(focus) {
   };
 }
 
-export function arrowChangeFocus(focus, keyCode, min, max) {
-  if (focus > min && keyCode === 38) {
+export function arrowChangeFocus(focus, keyCode) {
+  if (focus && keyCode === 38) {
     return {
       type: ARROW_UP_CHANGE_FOCUS,
       payload: focus,
     };
-  } else if (focus < max && keyCode === 40) {
+  } else if (focus && keyCode === 40) {
     return {
       type: ARROW_DOWN_CHANGE_FOCUS,
       payload: focus,
@@ -344,7 +344,7 @@ export default function reducer(state = initialState, action) {
         payload
       );
 
-      if (indexUp === state.employeesFilterCount) return { ...state };
+      if (indexUp === 0) return { ...state };
 
       const idUp = state.employeesFilterCount
         ? state.employeesFilter[indexUp - 1].id
@@ -363,7 +363,13 @@ export default function reducer(state = initialState, action) {
         payload
       );
 
-      if (indexDown === 0) return { ...state };
+      if (
+        indexDown === state.employeesCount - 1 ||
+        indexDown === state.employeesFilterCount - 1
+      )
+        return { ...state };
+      // if (indexDown === 0) return { ...state };
+
       const idDown = state.employeesFilterCount
         ? state.employeesFilter[indexDown + 1].id
         : state.employees[indexDown + 1].id;

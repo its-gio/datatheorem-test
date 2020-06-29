@@ -368,7 +368,6 @@ export default function reducer(state = initialState, action) {
         indexDown === state.employeesFilterCount - 1
       )
         return { ...state };
-      // if (indexDown === 0) return { ...state };
 
       const idDown = state.employeesFilterCount
         ? state.employeesFilter[indexDown + 1].id

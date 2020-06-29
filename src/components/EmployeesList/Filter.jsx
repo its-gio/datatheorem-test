@@ -25,6 +25,7 @@ function Filter(props) {
 
 const mapStateToProps = (reduxState) => ({
   departments: reduxState.employees.departments,
+  department: reduxState.employees.department,
   employeesFilter: reduxState.employees.employeesFilter,
   employeesFilterCount: reduxState.employees.employeesFilterCount,
 });

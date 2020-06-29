@@ -105,10 +105,10 @@ export function clickChangeFocus(id) {
 }
 
 export function enterOnEmployeeDisplay(focus) {
-  const data = Math.ceil(focus / 500);
+  const page = Math.ceil(focus / 500);
   return {
     type: ENTER_ON_EMPLOYEE_DISPLAY,
-    payload: data,
+    payload: page,
   };
 }
 
@@ -255,9 +255,9 @@ export default function reducer(state = initialState, action) {
       };
 
     case `${POST_EMPLOYEE}_FULFILLED`:
-      console.log(payload);
       return {
         ...state,
+        employee: [...state.employees, payload],
         loading: false,
       };
 
@@ -309,9 +309,10 @@ export default function reducer(state = initialState, action) {
       };
 
     case ENTER_ON_EMPLOYEE_DISPLAY:
+      const pageShown = state.employeesFilterCount ? state.pageShown : payload;
       return {
         ...state,
-        pageShown: payload,
+        pageShown,
       };
 
     case ARROW_CHANGE_FOCUS:

@@ -1,8 +1,8 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import Employee from "./components/Employee/Index";
-import EmployeesList from "./components/EmployeesList/Index";
-import EmployeeForm from "./components/EmployeeForm/Index";
+import Employee from "./components/Employee/";
+import EmployeesList from "./components/EmployeesList/";
+import EmployeeForm from "./components/EmployeeForm/";
 
 export default function Routes(props) {
   return (

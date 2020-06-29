@@ -35,6 +35,7 @@ class App extends Component {
 const mapStateToProps = (reduxState) => ({
   APIPeople: reduxState.employees.APIPeople,
   APIPage: reduxState.employees.APIPage,
+  employeesFilter: reduxState.employees.employeesFilter,
 });
 
 export default connect(mapStateToProps, { getEmpoyees })(App);

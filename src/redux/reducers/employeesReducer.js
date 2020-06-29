@@ -26,7 +26,8 @@ const SHOW_NEXT_EMPLOYEES = "SHOW_NEXT_EMPLOYEES";
 const CHANGE_PAGE_SHOWN = "CHANGE_PAGE_SHOWN";
 const CLICK_CHANGE_FOCUS = "CLICK_CHANGE_FOCUS";
 const ENTER_ON_EMPLOYEE_DISPLAY = "ENTER_ON_EMPLOYEE_DISPLAY";
-const ARROW_CHANGE_FOCUS = "ARROW_CHANGE_FOCUS";
+const ARROW_UP_CHANGE_FOCUS = "ARROW_UP_CHANGE_FOCUS";
+const ARROW_DOWN_CHANGE_FOCUS = "ARROW_DOWN_CHANGE_FOCUS";
 const HANDLE_FILTER_CHANGE = "HANDLE_FILTER_CHANGE";
 const HANDLE_FILTER_CLEAR = "HANDLE_FILTER_CLEAR";
 
@@ -115,17 +116,17 @@ export function enterOnEmployeeDisplay(focus) {
 export function arrowChangeFocus(focus, keyCode, min, max) {
   if (focus > min && keyCode === 38) {
     return {
-      type: ARROW_CHANGE_FOCUS,
-      payload: focus - 1,
+      type: ARROW_UP_CHANGE_FOCUS,
+      payload: focus,
     };
   } else if (focus < max && keyCode === 40) {
     return {
-      type: ARROW_CHANGE_FOCUS,
-      payload: focus + 1,
+      type: ARROW_DOWN_CHANGE_FOCUS,
+      payload: focus,
     };
   }
   return {
-    type: ARROW_CHANGE_FOCUS,
+    type: ARROW_UP_CHANGE_FOCUS,
     payload: focus,
   };
 }
@@ -317,12 +318,31 @@ export default function reducer(state = initialState, action) {
         pageShown,
       };
 
-    case ARROW_CHANGE_FOCUS:
+    case ARROW_UP_CHANGE_FOCUS:
+      const indexUp = state.employeesFilterCount
+        ? state.employeesFilter.findIndex((employee) => employee.id === payload)
+        : state.employees.findIndex((employee) => employee.id === payload);
+
+      const idUp = state.employeesFilterCount
+        ? state.employeesFilter[indexUp - 1].id
+        : state.employees[indexUp - 1].id;
+
       return {
         ...state,
-        focus: payload,
-        employeesFilter: [],
-        employeesFilterCount: null,
+        focus: idUp,
+      };
+
+    case ARROW_DOWN_CHANGE_FOCUS:
+      const indexDown = state.employeesFilterCount
+        ? state.employeesFilter.findIndex((employee) => employee.id === payload)
+        : state.employees.findIndex((employee) => employee.id === payload);
+
+      const idDown = state.employeesFilterCount
+        ? state.employeesFilter[indexDown + 1].id
+        : state.employees[indexDown + 1].id;
+      return {
+        ...state,
+        focus: idDown,
       };
 
     case HANDLE_FILTER_CLEAR:

@@ -30,6 +30,7 @@ const ARROW_UP_CHANGE_FOCUS = "ARROW_UP_CHANGE_FOCUS";
 const ARROW_DOWN_CHANGE_FOCUS = "ARROW_DOWN_CHANGE_FOCUS";
 const HANDLE_FILTER_CHANGE = "HANDLE_FILTER_CHANGE";
 const HANDLE_FILTER_CLEAR = "HANDLE_FILTER_CLEAR";
+const DO_NOTHING = "DO_NOTHING";
 
 // Export Functions
 export function getEmpoyees(APIPage, APIPeople) {
@@ -126,8 +127,8 @@ export function arrowChangeFocus(focus, keyCode, min, max) {
     };
   }
   return {
-    type: ARROW_UP_CHANGE_FOCUS,
-    payload: focus,
+    type: DO_NOTHING,
+    payload: {},
   };
 }
 
@@ -323,6 +324,8 @@ export default function reducer(state = initialState, action) {
         ? state.employeesFilter.findIndex((employee) => employee.id === payload)
         : state.employees.findIndex((employee) => employee.id === payload);
 
+      if (indexUp === 0) return { ...state };
+
       const idUp = state.employeesFilterCount
         ? state.employeesFilter[indexUp - 1].id
         : state.employees[indexUp - 1].id;
@@ -340,6 +343,7 @@ export default function reducer(state = initialState, action) {
       const idDown = state.employeesFilterCount
         ? state.employeesFilter[indexDown + 1].id
         : state.employees[indexDown + 1].id;
+
       return {
         ...state,
         focus: idDown,

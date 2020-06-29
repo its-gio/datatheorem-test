@@ -31,18 +31,6 @@ class Index extends Component {
       // If enter is pressed
       this.props.enterOnEmployeeDisplay(this.props.focus);
       this.props.history.push(`/`);
-      // } else if (
-      //   this.props.employeesFilterCount &&
-      //   (e.keyCode === 38 || e.keyCode === 40)
-      // ) {
-      // If Filter exists and (Up or Down) is pressed
-      // console.log("Filter Arrow Key!");
-      // this.props.arrowChangeFocus(
-      //   this.props.focus,
-      //   e.keyCode,
-      //   this.props.iOfFirstEmployee,
-      //   this.props.iOfLastEmployee
-      // );
     } else if (e.keyCode === 38 || e.keyCode === 40) {
       // If Up or Down is pressed (No filter exists)
       this.props.arrowChangeFocus(

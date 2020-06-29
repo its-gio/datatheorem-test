@@ -271,7 +271,7 @@ export default function reducer(state = initialState, action) {
     case `${POST_EMPLOYEE}_FULFILLED`:
       return {
         ...state,
-        employee: [...state.employees, payload],
+        employees: [...state.employees, payload],
         loading: false,
       };
 
